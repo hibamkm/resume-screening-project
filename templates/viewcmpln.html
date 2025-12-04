@@ -1,0 +1,43 @@
+{%include 'adminheader.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  
+<center>
+  <br><br><br><br><br><br><br><br><br><br><br>
+<table border="2" class="table-info" >
+    <tr>
+        <th>Complaint ID</th>
+        <th>User ID</th>
+        <th>Complaint Description</th>
+        <th>Reply</th>
+        <th>Date</th>
+    </tr>
+
+    {% for i in data['view'] %}
+    <tr>
+        <td>{{i['complaint_id']}}</td>
+        <td>{{i['user_id']}}</td>
+        <td>{{i['complaint_des']}}</td>
+        <td>{{i['reply']}}</td>
+        <td>{{i['date']}}</td>
+        <td><a href="/sndreply?&id={{i['complaint_id']}}">Reply</a></td>
+    </tr>
+    {% endfor %}
+</table></center><br><br><br><br><br><br><br><br><br>
+<style>
+    body{
+        background-image: url('/static/assets/offffff.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+
+</body>
+</html>
+{%include 'footer.html'%}

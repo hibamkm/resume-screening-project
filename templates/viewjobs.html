@@ -1,0 +1,75 @@
+{% include 'adminheader.html' %}
+<section id="hero" class="d-flex align-items-center justify-content-center">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
+            <div class="col-xl-6 col-lg-8">
+                <h1>WELCOME ADMIN<span>.</span></h1>
+                <h2>Personality Prediction System through CV Analysis</h2>
+            </div>
+        </div>
+
+        
+{%if data['up']%}
+<form action="" method="post">
+    <center><br><br><br><br><br><br><br><br>
+    <table  >
+        <tr>
+            <th>Title</th>
+            <td><input type="text" name="title" value="{{data['up'][0]['title']}}"></td>
+        </tr>
+        <tr>
+            <th>qualification</th>
+            <td><input type="text" name="quali" value="{{data['up'][0]['quali']}}"></td>
+        </tr>
+        <tr>
+            <th>details</th>
+            <td><input type="text" name="details" value="{{data['up'][0]['details']}}"></td>
+        </tr>
+        <tr>
+            <th>last_date</th>
+            <td><input type="text" name="date" value="{{data['up'][0]['date']}}"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="update" name="up"></td>
+        </tr>
+    </table></center><br><br><br><br><br><br><br><br>
+</form>
+{%else%} 
+
+
+
+
+<br><br><br>
+
+        {% for i in data['view'] %}
+
+        <div class="card" style="width: 18rem; display: inline-block; background-color: blanchedalmond; margin-right: 10px;">
+            <div class="card-body">
+                <h5 class="card-title">{{i['title']}}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{i['qualification']}}</h6>
+                <p class="card-text">{{i['details']}}</p>
+                <p class="card-text">{{i['last_date']}}</p>
+                <td><a class="btn btn-danger" href="?action=delete&id={{i['login_id']}}">delete</a>
+                <td><a class="btn btn-info" href="?action=update&id={{i['login_id']}}">update</a></td>
+
+               
+               
+            </div>
+        </div>
+        <!-- Repeat the above card structure for additional cards -->
+        
+  {% endfor %}
+
+  <br><br><br>
+
+
+    {%endif%}
+
+    </div>
+</section>
+
+
+
+
+{%include 'footer.html'%}
