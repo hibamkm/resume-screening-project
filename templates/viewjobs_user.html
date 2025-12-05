@@ -1,0 +1,49 @@
+
+<!-- ============================================================================ -->
+<!-- FILE: templates/viewjobs_user.html (NEW) -->
+<!-- ============================================================================ -->
+{% include 'userheader.html' %}
+<section id="hero" class="d-flex align-items-center justify-content-center">
+    <div class="container" data-aos="fade-up">
+        <br><br><br>
+        <h2 style="color: white; text-align: center;">Available Jobs</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            {% if data.get('jobs') %}
+                {% for job in data['jobs'] %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{job['title']}}</h5>
+                            <h6 class="text-muted">{{job['company_name']}}</h6>
+                            <p><strong>Qualification:</strong> {{job['qualification']}}</p>
+                            <p><strong>Details:</strong> {{job['details']}}</p>
+                            <p><strong>Last Date:</strong> {{job['last_date']}}</p>
+                            <a href="/applyjob?id={{job['job_id']}}" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: white;">No jobs available at the moment.</p>
+            {% endif %}
+        </div>
+        <br><br><br>
+    </div>
+</section>
+<style>
+    body{
+        background-image: url('/static/assets/offffff.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+{% include 'footer.html' %}

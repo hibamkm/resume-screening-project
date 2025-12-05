@@ -1,0 +1,60 @@
+<!-- ============================================================================ -->
+<!-- FILE: templates/user_reg.html (NEW) -->
+<!-- ============================================================================ -->
+{%include 'homeheader.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <center>
+        <br><br><br> 
+        <div class="wrapper">
+            <br><br><br><br><br><br>
+            <h2 style="color: beige;">User Registration</h2>
+            <form action="" method="post">
+                <div class="input-box">
+                    <input type="text" placeholder="First Name" name="fname" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Last Name" name="lname" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Place" name="place" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Phone" name="phone" required>
+                </div>
+                <div class="input-box">
+                    <input type="email" placeholder="Email" name="mail" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Username" name="uname" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password" name="password" required>
+                </div>
+                <div class="input-box button">
+                    <br>
+                    <input type="Submit" value="Register Now" name="reg">
+                </div>
+                <div class="text">
+                    <h5 style="color: beige;">Already have an account? <a href="/login">Login now</a></h5>
+                </div>
+            </form>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </center>
+</body>
+</html>
+<style>
+    body{
+        background-image: url('/static/assets/offffff.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+{%include 'footer.html'%}

@@ -1,0 +1,69 @@
+<!-- ============================================================================ -->
+<!-- FILE: templates/usersendcomplaint.html (NEW) -->
+<!-- ============================================================================ -->
+{% include 'userheader.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Complaint</title>
+</head>
+<body>
+    <br><br><br><br><br><br>
+    <center>
+        <h2 style="color: white;">Send Complaint</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="post" style="max-width: 600px;">
+            <div class="mb-3">
+                <textarea name="comp" class="form-control" rows="5" placeholder="Enter your complaint here..." required></textarea>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary">Submit Complaint</button>
+        </form>
+
+        <br><br>
+        <h3 style="color: white;">My Complaints</h3>
+        <table class="table table-bordered" style="background: white; max-width: 800px;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Complaint</th>
+                    <th>Reply</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if data.get('complaint') %}
+                    {% for c in data['complaint'] %}
+                    <tr>
+                        <td>{{c['date']}}</td>
+                        <td>{{c['complaint_des']}}</td>
+                        <td>{{c['reply']}}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">No complaints yet</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </center>
+    <br><br><br><br><br>
+</body>
+</html>
+<style>
+    body{
+        background-image: url('/static/assets/offffff.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+{% include 'footer.html' %}
+

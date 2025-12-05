@@ -63,4 +63,26 @@ def upjob():
  
     return render_template("job.html")
 
-
+@public.route("/user_reg", methods=['GET', 'POST'])
+def user_reg():
+    if 'reg' in request.form:
+        fname = request.form['fname']
+        lname = request.form['lname']
+        place = request.form['place']
+        phone = request.form['phone']
+        email = request.form['mail']
+        username = request.form['uname']
+        password = request.form['password']
+        
+        # Insert into login table
+        qry = "INSERT INTO login VALUES(null,'%s','%s','user')" % (username, password)
+        res = insert(qry)
+        
+        # Insert into user table
+        qry1 = "INSERT INTO user VALUES(null,'%s','%s','%s','%s','%s','%s',NULL,NULL)" % (res, fname, lname, place, email, phone)
+        res1 = insert(qry1)
+        
+        flash('Registration successful! Please login.')
+        return redirect(url_for('public.login'))
+    
+    return render_template("user_reg.html")
