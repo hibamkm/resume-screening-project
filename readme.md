@@ -1,15 +1,67 @@
-🚀 Pre-Run Checklist
-1. Install Required Packages
-bashpip install flask pymysql PyMuPDF scikit-learn pandas numpy joblib
-2. Database Setup (CRITICAL)
-First, check your MySQL port:
-python# In database.py, verify this matches YOUR MySQL:
-port=3307  # Change to 3306 if that's your MySQL port
-Run this SQL to create/fix tables:
-sqlCREATE DATABASE IF NOT EXISTS resume_screening;
+# 🎯 AI-Powered Resume Screening System
+
+A comprehensive Flask-based web application that automates resume screening using machine learning to predict candidate personality traits and match them with job requirements.
+
+## ✨ Features
+
+- **Multi-User System**: Separate portals for Admin, Companies, and Job Seekers
+- **AI-Powered Screening**: Machine learning model for personality prediction from resumes
+- **Job Management**: Companies can post jobs and review applications
+- **Resume Analysis**: Automatic extraction and analysis of PDF resumes
+- **Application Tracking**: Real-time status updates for job applications
+- **Complaint System**: Built-in feedback mechanism for users
+
+## 🛠️ Tech Stack
+
+- **Backend**: Flask (Python)
+- **Database**: MySQL
+- **ML Libraries**: scikit-learn, pandas, numpy
+- **PDF Processing**: PyMuPDF (fitz)
+- **Others**: joblib for model persistence
+
+## 📋 Prerequisites
+
+- Python 3.7+
+- MySQL Server (5.7+)
+- pip package manager
+
+## 🚀 Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/resume-screening-system.git
+cd resume-screening-system
+```
+
+### 2. Install Dependencies
+
+```bash
+pip install flask pymysql PyMuPDF scikit-learn pandas numpy joblib
+```
+
+### 3. Database Setup
+
+#### Check Your MySQL Port
+
+First, verify your MySQL port (usually 3306 or 3307). Update `database.py`:
+
+```python
+user="root"
+password=""  # Add your MySQL password if you have one
+database="resume_screening"
+port=3306  # Change to 3307 if needed
+```
+
+#### Create Database and Tables
+
+Run the following SQL commands in your MySQL client:
+
+```sql
+CREATE DATABASE IF NOT EXISTS resume_screening;
 USE resume_screening;
 
--- Create login table
+-- Login table
 CREATE TABLE IF NOT EXISTS login (
     login_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100),
@@ -17,7 +69,7 @@ CREATE TABLE IF NOT EXISTS login (
     usertype VARCHAR(50)
 );
 
--- Create company table
+-- Company table
 CREATE TABLE IF NOT EXISTS company (
     company_id INT AUTO_INCREMENT PRIMARY KEY,
     login_id INT,
@@ -28,7 +80,7 @@ CREATE TABLE IF NOT EXISTS company (
     est_year VARCHAR(500)
 );
 
--- Create user table
+-- User table
 CREATE TABLE IF NOT EXISTS user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     login_id INT,
@@ -41,7 +93,7 @@ CREATE TABLE IF NOT EXISTS user (
     cv_des TEXT
 );
 
--- Create jobs table
+-- Jobs table
 CREATE TABLE IF NOT EXISTS jobs (
     job_id INT AUTO_INCREMENT PRIMARY KEY,
     company_id INT,
@@ -54,7 +106,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     status VARCHAR(50) DEFAULT 'pending'
 );
 
--- Create application table
+-- Application table
 CREATE TABLE IF NOT EXISTS application (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -66,7 +118,7 @@ CREATE TABLE IF NOT EXISTS application (
     status VARCHAR(100) DEFAULT 'pending'
 );
 
--- Create complaints table
+-- Complaints table
 CREATE TABLE IF NOT EXISTS complaints (
     complaint_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -76,14 +128,24 @@ CREATE TABLE IF NOT EXISTS complaints (
     date DATE
 );
 
--- Insert default admin
-INSERT INTO login (username, password, usertype) VALUES ('admin', 'admin123', 'admin');
+-- Insert default admin account
+INSERT INTO login (username, password, usertype) 
+VALUES ('admin', 'admin123', 'admin');
+```
 
+### 4. Create Required Directories
 
+```bash
+mkdir -p static/resume
+mkdir -p static/models
+```
 
-5. Train the ML Model (FIRST TIME ONLY)
-Create a file train_model.py:
-pythonfrom ml_model import MLModel
+### 5. Train the ML Model
+
+Create a file `train_model.py`:
+
+```python
+from ml_model import MLModel
 import pandas as pd
 
 # Create sample training data
@@ -95,125 +157,198 @@ data = {
         'accounting finance excel budget analysis',
         'sales marketing customer service communication'
     ],
-    'personality': ['Analytical', 'Leadership', 'Creative', 'Detail-oriented', 'Outgoing']
+    'personality': [
+        'Analytical', 
+        'Leadership', 
+        'Creative', 
+        'Detail-oriented', 
+        'Outgoing'
+    ]
 }
 
 df = pd.DataFrame(data)
 
-# Train model
+# Train and save model
 ml = MLModel()
 ml.train_model(df)
-print("Model trained and saved!")
-Run it once:
-bashpython train_model.py
-6. Run the Application
-Start Flask:
-bashpython main.py
+print("✅ Model trained and saved successfully!")
 ```
 
-You should see:
+Run the training script (only needed once):
+
+```bash
+python train_model.py
 ```
- * Running on http://0.0.0.0:5005
- * Restarting with stat
-7. Testing Flow (IN THIS ORDER)
-Step 1: Login as Admin
 
-URL: http://localhost:5005/login
-Username: admin
-Password: admin123
+## 🎮 Running the Application
 
-Step 2: Register a Company
+Start the Flask server:
 
-URL: http://localhost:5005/company_reg
-Fill all details
-Then login with company credentials
+```bash
+python main.py
+```
 
-Step 3: Company Posts Job
+The application will be available at: `http://localhost:5005`
 
-Login as company
-Go to "Upload Jobs"
-Add job details
+## 👥 User Roles & Default Credentials
 
-Step 4: Register as User
+| Role | Username | Password | Notes |
+|------|----------|----------|-------|
+| Admin | `admin` | `admin123` | Pre-configured |
+| Company | - | - | Register via `/company_reg` |
+| Job Seeker | - | - | Register via `/user_reg` |
 
-URL: http://localhost:5005/user_reg
-Fill registration form
+## 📖 Usage Guide
 
-Step 5: User Uploads CV
+### For Administrators
 
-Login as user
-Go to profile
-Upload a PDF resume
+1. Login at `/login` with admin credentials
+2. Manage companies and users
+3. Review and respond to complaints
+4. Monitor system activity
 
-Step 6: User Applies for Job
+### For Companies
 
-Browse jobs
-Click apply
+1. Register at `/company_reg`
+2. Login with your credentials
+3. Post job openings via "Upload Jobs"
+4. Review applications and candidate profiles
+5. Update application status
 
+### For Job Seekers
 
-⚠️ Common Errors & Fixes
-Error 1: "No module named 'fitz'"
-bashpip install PyMuPDF
-Error 2: "Can't connect to MySQL server"
-Check database.py:
-pythonport=3306  # or 3307 - check your MySQL port
-Error 3: "Table doesn't exist"
-Run the SQL script above in your MySQL
-Error 4: "Personality model not found"
-bashpython train_model.py
-Error 5: "404 Not Found"
-Make sure all blueprints are registered in main.py:
-pythonapp.register_blueprint(public)
-app.register_blueprint(admin)
-app.register_blueprint(compny)
-app.register_blueprint(user)  # Don't forget this!
-app.register_blueprint(api)
-Error 6: "FileNotFoundError: static/resume"
-bashmkdir -p static/resume
-mkdir -p static/models
+1. Register at `/user_reg`
+2. Login and complete your profile
+3. Upload your resume (PDF format)
+4. Browse available jobs
+5. Apply for positions
+6. Track application status
 
-🔧 Important Configuration Changes
-In database.py - Match your MySQL setup:
-pythonuser="root"
-password=""  # Add your MySQL password if you have one
-database="resume_screening"
-port=3306  # Change to 3307 if needed
-In main.py - Change port if 5005 is busy:
-pythonapp.run(debug=True, port=5000, host="0.0.0.0")  # Change 5005 to 5000
+## 🧪 Testing
 
-✅ Quick Test Commands
-Test database connection:
-python# test_db.py
+### Test Database Connection
+
+```python
+# test_db.py
 from database import select
+
 result = select("SELECT * FROM login WHERE username='admin'")
 print(result)
-Test ML model:
-python# test_ml.py
+```
+
+### Test ML Model
+
+```python
+# test_ml.py
 from ml_model import MLModel
+
 ml = MLModel()
 result = ml.predict_personality("python developer with 5 years experience")
 print(result)
+```
 
-📝 Default Login Credentials
-RoleUsernamePasswordAdminadminadmin123Company(register first)(your choice)User(register first)(your choice)
+## 🔧 Configuration
 
-🎯 Quick Start Commands
-bash# 1. Install packages
-pip install flask pymysql PyMuPDF scikit-learn pandas numpy joblib
+### Change Application Port
 
-# 2. Create folders
-mkdir static/resume static/models
+In `main.py`:
 
-# 3. Run SQL script (in MySQL)
-# Copy the CREATE TABLE commands above
+```python
+app.run(debug=True, port=5000, host="0.0.0.0")  # Change port as needed
+```
 
-# 4. Train ML model (first time only)
+### Update Database Credentials
+
+In `database.py`:
+
+```python
+user="root"
+password="your_mysql_password"
+database="resume_screening"
+port=3306
+```
+
+## ⚠️ Troubleshooting
+
+### Module Not Found Errors
+
+```bash
+# PyMuPDF/fitz error
+pip install PyMuPDF
+
+# Other missing packages
+pip install flask pymysql scikit-learn pandas numpy joblib
+```
+
+### Database Connection Issues
+
+- Verify MySQL is running: `sudo systemctl status mysql`
+- Check port in `database.py` (3306 or 3307)
+- Confirm credentials are correct
+
+### Table Does Not Exist
+
+Run the SQL script provided in Database Setup section
+
+### Model Not Found Error
+
+```bash
 python train_model.py
+```
 
-# 5. Start application
-python main.py
+### 404 Errors
 
-# 6. Open browser
-# Go to: http://localhost:5005
+Ensure all blueprints are registered in `main.py`:
 
-What's the status of your MySQL? Is it running on port 3306 or 3307? Let me know if you hit any errors and I'll help you fix them immediately! 🚀Hokay fix 
+```python
+app.register_blueprint(public)
+app.register_blueprint(admin)
+app.register_blueprint(compny)
+app.register_blueprint(user)
+app.register_blueprint(api)
+```
+
+### File/Directory Errors
+
+```bash
+mkdir -p static/resume
+mkdir -p static/models
+```
+
+## 📁 Project Structure
+
+```
+resume-screening-system/
+├── main.py                 # Application entry point
+├── database.py            # Database connection handler
+├── ml_model.py            # ML model for personality prediction
+├── train_model.py         # Model training script
+├── public.py              # Public routes (login, register)
+├── admin.py               # Admin panel routes
+├── compny.py              # Company portal routes
+├── user.py                # Job seeker portal routes
+├── api.py                 # API endpoints
+├── static/
+│   ├── resume/           # Uploaded resumes
+│   └── models/           # Trained ML models
+└── templates/            # HTML templates
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🐛 Known Issues
+
+- PDF extraction may fail for scanned/image-based resumes
+- Model accuracy depends on training data quality
+- Large resume files may cause timeout issues
+
