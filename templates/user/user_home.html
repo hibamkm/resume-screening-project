@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}User Home - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('user_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto" href="{{ url_for('view_companies') }}">View Companies</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('view_my_applications') }}">My Applications</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('send_complaint') }}">Send Complaint</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="text-center" style="color: white; padding: 100px 0;">
+    <h1 style="font-size: 3.5rem; font-weight: 700; margin-bottom: 20px;">
+        Welcome, {{ session.user_name }}!
+    </h1>
+    <p class="lead" style="font-size: 1.5rem; margin-bottom: 40px;">
+        Find your dream job and track your applications
+    </p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-building" style="font-size: 3rem; color: #f82249;"></i>
+                    <h4 class="mt-3" style="color: white;">Browse Companies</h4>
+                    <p style="color: rgba(255,255,255,0.8);">Explore job opportunities</p>
+                    <a href="{{ url_for('view_companies') }}" class="btn btn-primary mt-2" style="background: #f82249; border: none;">View Companies</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-file-earmark-text" style="font-size: 3rem; color: #f82249;"></i>
+                    <h4 class="mt-3" style="color: white;">My Applications</h4>
+                    <p style="color: rgba(255,255,255,0.8);">Track application status</p>
+                    <a href="{{ url_for('view_my_applications') }}" class="btn btn-primary mt-2" style="background: #f82249; border: none;">View Applications</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-chat-left-text" style="font-size: 3rem; color: #f82249;"></i>
+                    <h4 class="mt-3" style="color: white;">Get Support</h4>
+                    <p style="color: rgba(255,255,255,0.8);">Send complaints or queries</p>
+                    <a href="{{ url_for('send_complaint') }}" class="btn btn-primary mt-2" style="background: #f82249; border: none;">Send Complaint</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}View Companies - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('user_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto active" href="{{ url_for('view_companies') }}">View Companies</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('view_my_applications') }}">My Applications</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('send_complaint') }}">Send Complaint</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 40px;">
+    <h2 class="text-center mb-4" style="color: #5846f9; font-weight: 700;">Available Companies</h2>
+    
+    {% if companies %}
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100" style="border: 2px solid #667eea; border-radius: 10px;">
+                <div class="card-body">
+                    <h4 style="color: #5846f9;">{{ company.company_name }}</h4>
+                    <p class="mb-2"><i class="bi bi-geo-alt"></i> {{ company.place }}</p>
+                    <p class="mb-2"><i class="bi bi-envelope"></i> {{ company.email }}</p>
+                    <p class="mb-2"><i class="bi bi-telephone"></i> {{ company.phone }}</p>
+                    <p class="mb-3"><i class="bi bi-calendar-check"></i> Established: {{ company.est_year }}</p>
+                    
+                    <a href="{{ url_for('view_jobs', company_id=company.company_id) }}" 
+                       class="btn btn-primary w-100" 
+                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                        View Jobs <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-building" style="font-size: 4rem; color: #ccc;"></i>
+        <p class="mt-3" style="color: #666;">No companies available at the moment.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

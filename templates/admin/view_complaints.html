@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}View Complaints - Admin - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('admin_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto" href="{{ url_for('admin_view_companies') }}">View Companies</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('admin_view_applications') }}">Application Rankings</a></li>
+<li><a class="nav-link scrollto active" href="{{ url_for('admin_view_complaints') }}">View Complaints</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 40px;">
+    <h2 class="text-center mb-4" style="color: #5846f9; font-weight: 700;">User Complaints</h2>
+    
+    {% if complaints %}
+    {% for complaint in complaints %}
+    <div class="card mb-4" style="border: 2px solid #667eea; border-radius: 10px;">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5 style="color: #5846f9;">{{ complaint.first_name }} {{ complaint.last_name }}</h5>
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-envelope"></i> {{ complaint.email }}<br>
+                        <i class="bi bi-calendar"></i> {{ complaint.date }}
+                    </p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span class="badge" style="font-size: 1rem; background: {% if complaint.reply %}#28a745{% else %}#dc3545{% endif %};">
+                        {% if complaint.reply %}Replied{% else %}Pending{% endif %}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <strong>Complaint:</strong>
+                <p class="mt-2" style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    {{ complaint.complaint }}
+                </p>
+            </div>
+            
+            {% if complaint.reply %}
+            <div class="mb-3">
+                <strong style="color: #28a745;">Your Reply:</strong>
+                <p class="mt-2" style="background: #d4edda; padding: 15px; border-radius: 8px;">
+                    {{ complaint.reply }}
+                </p>
+            </div>
+            {% else %}
+            <form method="POST" action="{{ url_for('reply_complaint', complaint_id=complaint.complaint_id) }}">
+                <div class="mb-3">
+                    <label for="reply_{{ complaint.complaint_id }}" class="form-label">
+                        <strong>Send Reply:</strong>
+                    </label>
+                    <textarea class="form-control" id="reply_{{ complaint.complaint_id }}" 
+                              name="reply" rows="3" placeholder="Type your reply here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" 
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                    <i class="bi bi-send"></i> Send Reply
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-chat-left-text" style="font-size: 4rem; color: #ccc;"></i>
+        <p class="mt-3" style="color: #666;">No complaints received yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

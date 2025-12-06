@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}View Applications - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('company_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto" href="{{ url_for('upload_job') }}">Upload Jobs</a></li>
+<li><a class="nav-link scrollto active" href="{{ url_for('view_application') }}">View Applications</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 40px;">
+    <h2 class="text-center mb-5" style="color: #5846f9; font-weight: 700;">Applications Received</h2>
+    
+    {% if grouped_applications %}
+    <div class="table-responsive">
+        {% for job_id, applications in grouped_applications.items() %}
+            <h3 class="text-center mb-3" style="font-weight: normal; font-size: 1.5rem; text-transform: capitalize;">{{ applications[0].title }}</h3>
+            <table class="table table-hover mb-5" style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Job Title</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Resume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                        <tr>
+                            <td>{{ app.first_name }} {{ app.last_name }}</td>
+                            <td>{{ app.title }}</td>
+                            <td>{{ app.email }}</td>
+                            <td>{{ app.phone }}</td>
+                            <td>
+                                <span class="badge" style="background: {% if app.mark|int >= 70 %}#28a745{% elif app.mark|int >= 50 %}#ffc107{% else %}#dc3545{% endif %};">
+                                    {{ app.mark }}/100
+                                </span>
+                            </td>
+                            <td>{{ app.date }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ app.status }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('static', filename=app.resume_path) }}" 
+                                class="btn btn-sm btn-primary" target="_blank">
+                                    <i class="bi bi-file-pdf"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+        <p class="mt-3" style="color: #666;">No applications received yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

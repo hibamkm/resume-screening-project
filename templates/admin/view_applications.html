@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Application Rankings - Admin - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('admin_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto" href="{{ url_for('admin_view_companies') }}">View Companies</a></li>
+<li><a class="nav-link scrollto active" href="{{ url_for('admin_view_applications') }}">Application Rankings</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('admin_view_complaints') }}">View Complaints</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="card" style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 40px;">
+    <h2 class="text-center mb-4" style="color: #5846f9; font-weight: 700;">Application Rankings (By Score)</h2>
+    
+    {% if applications %}
+    <div class="table-responsive">
+        {% for company_name, jobs in applications.items() %}
+            <h4 class="mt-4 mb-4" style="color: #333; text-transform: capitalize;">Company: {{ company_name }}</h4>
+            {% for job_title, apps in jobs.items() %}
+                <h5 class="mt-3 mb-3" style="color: #555; text-transform: capitalize; text-align: left;">Job Title: {{ job_title }}</h5>
+
+                <table class="table table-hover mb-5">
+                    <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Applicant</th>
+                            <th>Email</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Resume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in apps %}
+                        <tr>
+                            <td><strong>#{{ loop.index }}</strong></td>
+                            <td>{{ app.first_name }} {{ app.last_name }}</td>
+                            <td>{{ app.email }}</td>
+                            <td>{{ app.title }}</td>
+                            <td>{{ app.company_name }}</td>
+                            <td>
+                                <span class="badge" style="font-size: 1rem; background: {% if app.mark|int >= 70 %}#28a745{% elif app.mark|int >= 50 %}#ffc107{% else %}#dc3545{% endif %};">
+                                    {{ app.mark }}/100
+                                </span>
+                            </td>
+                            <td>{{ app.date }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ app.status }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('static', filename=app.resume_path) }}" 
+                                class="btn btn-sm btn-primary" target="_blank">
+                                    <i class="bi bi-file-pdf"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+        <p class="mt-3" style="color: #666;">No applications submitted yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

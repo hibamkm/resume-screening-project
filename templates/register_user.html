@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Register User - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('index') }}{% endblock %}
+{% block auth_button %}
+    <a href="{{ url_for('login') }}" class="get-started-btn scrollto">Login</a>
+{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto" href="{{ url_for('register_company') }}">Register as company</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('login') }}">Login
+</a></li>
+{% endblock %}
+{% block head %}
+    <style>
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .register-card h2 {
+            color: #5846f9;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        body {
+            color: #eee;
+        }
+        .form-control {
+            background-color: #2929298f;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="register-card card-body text-center p-4" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+            <h2 class="mb-5">User Registration</h2>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('register_user') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" class="form-control" id="place" name="place" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 mb-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">Register</button>
+            </form>
+            
+            <div class="text-center">
+                <a href="{{ url_for('index') }}" class="text-decoration-none">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{% endblock %}

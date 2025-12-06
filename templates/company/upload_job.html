@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Job - Talent Screen 360{% endblock %}
+
+{% block logo_link %}{{ url_for('company_home') }}{% endblock %}
+
+{% block nav_links %}
+<li><a class="nav-link scrollto active" href="{{ url_for('upload_job') }}">Upload Jobs</a></li>
+<li><a class="nav-link scrollto" href="{{ url_for('view_application') }}">View Applications</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card" style="background: rgba(255,255,255,0.95); border-radius: 15px; padding: 40px;">
+            <h2 class="text-center mb-4" style="color: #5846f9; font-weight: 700;">Post a New Job</h2>
+            
+            <form method="POST" action="{{ url_for('upload_job') }}">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Job Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="qualification" class="form-label">Required Qualification</label>
+                    <input type="text" class="form-control" id="qualification" name="qualification" 
+                           placeholder="e.g., Bachelor's in Computer Science" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="requirements" class="form-label">Skills & Requirements</label>
+                    <input type="text" class="form-control" id="requirements" name="requirements" 
+                           placeholder="e.g., Python, Java, SQL (comma-separated)" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="details" class="form-label">Job Details</label>
+                    <textarea class="form-control" id="details" name="details" rows="5" 
+                              placeholder="Describe the job responsibilities, benefits, etc." required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="last_date" class="form-label">Application Deadline</label>
+                    <input type="date" class="form-control" id="last_date" name="last_date" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100" 
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px;">
+                    Post Job
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
