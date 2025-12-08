@@ -6,7 +6,7 @@ class Database:
         self.config = {
             'host': 'localhost',
             'user': 'root',
-            'password': 'YOUR_MYSQL_PASSWORD',  # Change this
+            'password': 'password',  # Change this
             'database': 'talent_screen360',
             'buffered': True
         }

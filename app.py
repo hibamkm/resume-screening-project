@@ -221,7 +221,7 @@ def apply_job(job_id):
         # Create application with relative path
         db.create_application(session['user_id'], job_id, relative_path, score)
         
-        flash(f'Application submitted successfully! Your score: {score}/100', 'success')
+        flash(f'Application submitted successfully!, 'success')
         return redirect(url_for('view_my_applications'))
     else:
         flash('Only PDF files are allowed', 'error')
